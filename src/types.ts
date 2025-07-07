@@ -48,3 +48,10 @@ export interface HeadingNode {
   content: string
   children: HeadingNode[]
 }
+
+export interface Image {
+  name: string
+  url: string
+  path: string
+  alt: string
+}
