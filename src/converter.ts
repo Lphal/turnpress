@@ -37,7 +37,7 @@ export async function convertDocxToHtml(options: Options) {
       resolve(workspace, TEMP_MARKDOWN),
       `--extract-media=${resolve(workspace, 'assets')}`,
       '-t',
-      'markdown+startnum',
+      'markdown+startnum-implicit_figures',
       '--wrap=preserve',
     ],
     {
@@ -54,7 +54,7 @@ export async function convertDocxToHtml(options: Options) {
       '-o',
       resolve(workspace, TEMP_HTML),
       '-f',
-      'markdown+startnum',
+      'markdown+startnum-implicit_figures',
     ],
     {
       shell: true,
