@@ -1,16 +1,21 @@
 import type { Options } from './types'
 import { mkdir, readFile, writeFile } from 'node:fs/promises'
 import process from 'node:process'
+import { fileURLToPath } from 'node:url'
 import * as p from '@clack/prompts'
 import c from 'ansis'
 import * as cheerio from 'cheerio'
 import { execa } from 'execa'
 import { exists } from 'fs-extra'
-import { resolve } from 'pathe'
+import { dirname, resolve } from 'pathe'
 import TurndownService from 'turndown'
 import { TEMP_HTML, TEMP_MARKDOWN } from './constants'
 import { images } from './turndown/images'
 import { plugins } from './turndown/plugins'
+
+// Get the current file's directory
+const currentDir = dirname(fileURLToPath(import.meta.url))
+const filterPath = resolve(currentDir, 'filters/header-numbering.lua')
 
 export async function convertDocxToHtml(options: Options) {
   const { workspace, pandoc, docx } = options
@@ -39,6 +44,7 @@ export async function convertDocxToHtml(options: Options) {
       '-t',
       'markdown+startnum-implicit_figures',
       '--wrap=preserve',
+      `--lua-filter=${filterPath}`,
     ],
     {
       shell: true,
@@ -55,6 +61,7 @@ export async function convertDocxToHtml(options: Options) {
       resolve(workspace, TEMP_HTML),
       '-f',
       'markdown+startnum-implicit_figures',
+      `--lua-filter=${filterPath}`,
     ],
     {
       shell: true,
